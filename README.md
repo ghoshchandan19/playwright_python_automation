@@ -7,7 +7,6 @@ A comprehensive Playwright automation framework built with TypeScript for web ap
 - **TypeScript Support**: Full type safety and modern JavaScript features
 - **Page Object Model**: Organized page objects for maintainable test code
 - **Cross-browser Testing**: Support for Chromium, Firefox, and WebKit
-- **Mobile Testing**: Responsive testing on mobile devices
 - **API Testing**: Integrated API testing capabilities
 - **Parallel Execution**: Fast test execution with parallel runs
 - **Rich Reporting**: HTML, JSON, and JUnit reports
@@ -23,13 +22,14 @@ src/
 │   ├── HomePage.ts
 │   └── NewAccountPage.ts
 ├── tests/           # Test files
-│   ├── demo.spec.ts
+│   ├── end-to-end.spec.ts
 │   └── api.spec.ts
-├── utils/           # Utility functions
-│   └── testData.ts
-├── fixtures/        # Custom test fixtures
-│   └── testFixtures.ts
+├── constants/       # Application constants and configuration
+│   └── application-constants.ts
+├── config/          # Configuration files
+│   └── urls.ts
 └── data/            # Test data and credentials
+    └── credentials.json
 ```
 
 ## Prerequisites
@@ -52,7 +52,7 @@ src/
 
 3. **Install Playwright browsers**
    ```bash
-   npm run install:browsers
+   npx playwright install
    ```
 
 ## Configuration
@@ -65,7 +65,6 @@ The framework is configured via `playwright.config.ts` with the following featur
 - **Screenshots**: Captured on test failures
 - **Videos**: Recorded for failed tests
 - **Multiple Browsers**: Chromium, Firefox, WebKit
-- **Mobile Testing**: iPhone 12, Pixel 5
 
 ## Running Tests
 
@@ -73,40 +72,74 @@ The framework is configured via `playwright.config.ts` with the following featur
 
 ```bash
 # Run all tests
-npm test
+npx playwright test
 
 # Run tests in headed mode (visible browser)
-npm run test:headed
+npx playwright test --headed
 
 # Run tests in debug mode
-npm run test:debug
+npx playwright test --debug
 
 # Run tests with UI mode
-npm run test:ui
+npx playwright test --ui
 ```
 
 ### Specific Test Execution
 
 ```bash
 # Run specific test file
-npx playwright test demo.spec.ts
+npx playwright test src/tests/end-to-end.spec.ts
 
 # Run tests matching a pattern
 npx playwright test --grep "login"
 
-# Run tests in specific browser
+# Run tests in specific browser (Chromium only)
 npx playwright test --project=chromium
+
+# Run tests without retries
+npx playwright test --retries=0
 ```
 
 ### Test Reports
 
 ```bash
 # View HTML report
-npm run test:report
+npx playwright show-report
 
 # Generate JSON report
 npx playwright test --reporter=json
+
+# Generate JUnit report
+npx playwright test --reporter=junit
 ```
+
+## CI/CD Pipeline
+
+This project includes a GitHub Actions workflow for automated testing:
+
+### GitHub Actions Configuration
+
+The CI pipeline (`/.github/workflows/github.yml`) runs on:
+- **Triggers**: Push to `main`/`develop` branches and pull requests to `main`
+- **Environment**: Ubuntu latest
+- **Node.js**: Version 18
+- **Browser**: Chromium only (for faster CI execution)
+- **Retries**: Disabled (`--retries=0`) for cleaner CI results
+
+### Pipeline Steps
+
+1. **Checkout code** - Downloads the repository
+2. **Setup Node.js** - Installs Node.js 18
+3. **Install dependencies** - Runs `npm install`
+4. **Install Playwright browsers** - Installs Chromium with dependencies
+5. **Run tests** - Executes tests on Chromium only
+6. **Upload test results** - Saves test reports as artifacts (30-day retention)
+
+### Viewing CI Results
+
+- Test reports are automatically uploaded as artifacts
+- Download the `playwright-report` artifact to view detailed test results
+- Check the Actions tab in GitHub for pipeline status
 
 ## Test Examples
 
@@ -154,9 +187,16 @@ test('API authentication', async ({ request }) => {
 
 ## Utilities
 
-### Test Data
-- `generateRandomUsername()`: Creates unique usernames
-- `TEST_DATA`: Common test constants and URLs
+### Test Data Management
+- **Dynamic Credentials**: Automatically loads credentials from `data/credentials.json`
+- **Random Username Generation**: Creates unique usernames for each test run
+- **Centralized Constants**: All selectors, URLs, and test data in `application-constants.ts`
+- **Fallback Credentials**: Uses default credentials if JSON file doesn't exist
+
+### Configuration Files
+- **`application-constants.ts`**: Centralized configuration, selectors, and test data
+- **`urls.ts`**: Application URLs and endpoints
+- **`playwright.config.ts`**: Playwright configuration and browser settings
 
 ## Best Practices
 
