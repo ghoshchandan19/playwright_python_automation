@@ -1,11 +1,11 @@
 # Test Coverage Analysis
 
-## ✅ UI Test Scenarios Coverage
+## 📋 UI Test Scenarios (Planned Implementation)
 
 ### **Scenario 1: Navigate to ParaBank application**
-- **Status**: ✅ **COVERED**
-- **Test File**: `src/tests/ui-test-scenarios.spec.ts`
-- **Test Method**: `Complete UI Test Scenarios - All Steps`
+- **Status**: 🔄 **PLANNED**
+- **Test File**: `src/tests/end-to-end.spec.ts` (to be implemented)
+- **Test Method**: `Navigate to ParaBank application`
 - **Assertion**: `await expect(page).toHaveTitle("ParaBank | Welcome | Online Banking")`
 - **Implementation**: 
   ```typescript
@@ -14,9 +14,9 @@
   ```
 
 ### **Scenario 2: Create new user with random username**
-- **Status**: ✅ **COVERED**
-- **Test File**: `src/tests/ui-test-scenarios.spec.ts`
-- **Test Method**: `Complete UI Test Scenarios - All Steps`
+- **Status**: 🔄 **PLANNED**
+- **Test File**: `src/tests/end-to-end.spec.ts` (to be implemented)
+- **Test Method**: `Create new user with random username`
 - **Assertion**: Username generation and registration success
 - **Implementation**:
   ```typescript
@@ -27,9 +27,9 @@
   ```
 
 ### **Scenario 3: Login with created user**
-- **Status**: ✅ **COVERED**
-- **Test File**: `src/tests/ui-test-scenarios.spec.ts`
-- **Test Method**: `Complete UI Test Scenarios - All Steps`
+- **Status**: 🔄 **PLANNED**
+- **Test File**: `src/tests/end-to-end.spec.ts` (to be implemented)
+- **Test Method**: `Login with created user`
 - **Assertion**: Successful login and navigation to accounts overview
 - **Implementation**:
   ```typescript
@@ -38,9 +38,9 @@
   ```
 
 ### **Scenario 4: Verify Global navigation menu**
-- **Status**: ✅ **COVERED**
-- **Test File**: `src/tests/ui-test-scenarios.spec.ts`
-- **Test Method**: `Complete UI Test Scenarios - All Steps`
+- **Status**: 🔄 **PLANNED**
+- **Test File**: `src/tests/end-to-end.spec.ts` (to be implemented)
+- **Test Method**: `Verify Global navigation menu`
 - **Assertion**: All navigation menu items working correctly
 - **Implementation**:
   ```typescript
@@ -50,9 +50,9 @@
   ```
 
 ### **Scenario 5: Create Savings account and capture account number**
-- **Status**: ✅ **COVERED**
-- **Test File**: `src/tests/ui-test-scenarios.spec.ts`
-- **Test Method**: `Complete UI Test Scenarios - All Steps`
+- **Status**: 🔄 **PLANNED**
+- **Test File**: `src/tests/end-to-end.spec.ts` (to be implemented)
+- **Test Method**: `Create Savings account and capture account number`
 - **Assertion**: Account creation success and account ID capture
 - **Implementation**:
   ```typescript
@@ -62,9 +62,9 @@
   ```
 
 ### **Scenario 6: Validate Accounts overview page balance details**
-- **Status**: ✅ **COVERED**
-- **Test File**: `src/tests/ui-test-scenarios.spec.ts`
-- **Test Method**: `Complete UI Test Scenarios - All Steps`
+- **Status**: 🔄 **PLANNED**
+- **Test File**: `src/tests/end-to-end.spec.ts` (to be implemented)
+- **Test Method**: `Validate Accounts overview page balance details`
 - **Assertion**: Account data display and balance calculations
 - **Implementation**:
   ```typescript
@@ -74,9 +74,9 @@
   ```
 
 ### **Scenario 7: Transfer funds between accounts**
-- **Status**: ✅ **COVERED**
-- **Test File**: `src/tests/ui-test-scenarios.spec.ts`
-- **Test Method**: `Complete UI Test Scenarios - All Steps`
+- **Status**: 🔄 **PLANNED**
+- **Test File**: `src/tests/end-to-end.spec.ts` (to be implemented)
+- **Test Method**: `Transfer funds between accounts`
 - **Assertion**: Fund transfer between accounts
 - **Implementation**:
   ```typescript
@@ -86,9 +86,9 @@
   ```
 
 ### **Scenario 8: Pay bill with created account**
-- **Status**: ✅ **COVERED**
-- **Test File**: `src/tests/ui-test-scenarios.spec.ts`
-- **Test Method**: `Complete UI Test Scenarios - All Steps`
+- **Status**: 🔄 **PLANNED**
+- **Test File**: `src/tests/end-to-end.spec.ts` (to be implemented)
+- **Test Method**: `Pay bill with created account`
 - **Assertion**: Bill payment with created account
 - **Implementation**:
   ```typescript
@@ -100,11 +100,8 @@
 ## 🧪 Test Files Overview
 
 ### **Primary Test Files**
-1. **`src/tests/ui-test-scenarios.spec.ts`** - Comprehensive UI test scenarios
-2. **`src/tests/end-to-end.spec.ts`** - End-to-end user journey tests
-3. **`src/tests/basic.spec.ts`** - Basic functionality tests
-4. **`src/tests/api.spec.ts`** - API testing
-5. **`src/tests/demo.spec.ts`** - Demo tests
+1. **`src/tests/end-to-end.spec.ts`** - End-to-end user journey tests
+2. **`src/tests/api.spec.ts`** - API testing
 
 ### **Page Object Classes**
 1. **`src/pages/RegistrationPage.ts`** - User registration functionality
@@ -158,37 +155,43 @@
 
 ## 🚀 Running the Tests
 
-### **Run All UI Test Scenarios**
+### **Run All Tests**
 ```bash
-npx playwright test src/tests/ui-test-scenarios.spec.ts --project=chromium --headed
+npx playwright test --project=chromium --headed
 ```
 
-### **Run Individual Scenarios**
+### **Run Individual Test Files**
 ```bash
-# Run complete scenario test
-npx playwright test src/tests/ui-test-scenarios.spec.ts -g "Complete UI Test Scenarios"
+# Run end-to-end tests
+npx playwright test src/tests/end-to-end.spec.ts --project=chromium
 
-# Run individual scenario tests
-npx playwright test src/tests/ui-test-scenarios.spec.ts -g "Individual Scenario Tests"
+# Run API tests
+npx playwright test src/tests/api.spec.ts --project=chromium
 ```
 
 ### **Run with Different Browsers**
 ```bash
 # Chromium
-npx playwright test src/tests/ui-test-scenarios.spec.ts --project=chromium
+npx playwright test --project=chromium
 
 # Firefox
-npx playwright test src/tests/ui-test-scenarios.spec.ts --project=firefox
+npx playwright test --project=firefox
 
 # WebKit
-npx playwright test src/tests/ui-test-scenarios.spec.ts --project=webkit
+npx playwright test --project=webkit
 ```
 
-## ✅ **Summary: All UI Test Scenarios are FULLY COVERED**
+## ✅ **Summary: Test Framework Status**
 
-The framework successfully covers all 8 required UI test scenarios with:
-- ✅ **Proper assertions** at each step
-- ✅ **Random username generation** for uniqueness
-- ✅ **Comprehensive error handling**
-- ✅ **Cross-browser compatibility**
-- ✅ **Modular and maintainable code structure**
+The Playwright TypeScript automation framework includes:
+- ✅ **End-to-end test scenarios** for complete user journeys
+- ✅ **API testing capabilities** for backend validation
+- ✅ **Page Object Model** for maintainable test structure
+- ✅ **Cross-browser compatibility** (Chromium, Firefox, WebKit)
+- ✅ **Comprehensive error handling** and timeout management
+- ✅ **Modular and scalable architecture**
+
+### **Current Test Coverage**
+- **End-to-End Tests**: Complete user workflows and scenarios
+- **API Tests**: Backend API validation and testing
+- **Page Objects**: Reusable components for UI interactions
