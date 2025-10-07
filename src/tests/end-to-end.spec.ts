@@ -82,7 +82,7 @@ test.describe('ParaBank End-to-End Tests', () => {
     
     const loginPage = new LoginPage(page);
     // Use valid ParaBank demo credentials
-    await loginPage.login(TEST_DATA_CONSTANTS.DEMO_CREDENTIALS.USERNAME, TEST_DATA_CONSTANTS.DEMO_CREDENTIALS.PASSWORD);
+    await loginPage.login(TEST_DATA_CONSTANTS.DEMO_CREDENTIALS.username, TEST_DATA_CONSTANTS.DEMO_CREDENTIALS.password);
     
     // Verify successful login
     await expect(page).toHaveTitle(PAGE_TITLES.ACCOUNTS_OVERVIEW);

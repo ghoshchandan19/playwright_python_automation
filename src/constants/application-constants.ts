@@ -1,3 +1,53 @@
+import * as fs from 'fs';
+import * as path from 'path';
+
+/**
+ * Loads demo credentials from credentials.json file
+ * 
+ * @description This function reads the credentials.json file created during
+ * user registration and returns the stored username and password for use
+ * in subsequent tests.
+ * 
+ * @returns {Object} Object containing username and password from credentials.json
+ * @returns {string} Object.username - The username from credentials.json
+ * @returns {string} Object.password - The password from credentials.json
+ * 
+ * @example
+ * ```typescript
+ * const credentials = loadDemoCredentials();
+ * console.log(credentials.username); // "alpha1234@gmail.com"
+ * console.log(credentials.password); // "Password123"
+ * ```
+ */
+export function loadDemoCredentials(): { username: string; password: string } {
+  try {
+    const baseDir = path.dirname(path.dirname(__dirname));
+    const dataDir = path.join(baseDir, "data");
+    const filePath = path.join(dataDir, "credentials.json");
+    
+    if (fs.existsSync(filePath)) {
+      const credentialsData = fs.readFileSync(filePath, 'utf8');
+      const credentials = JSON.parse(credentialsData);
+      
+      // Ensure we have valid strings
+      if (credentials.username && credentials.password) {
+        return {
+          username: String(credentials.username),
+          password: String(credentials.password)
+        };
+      }
+    }
+  } catch (error) {
+    console.warn('Could not load credentials from file, using defaults:', error);
+  }
+  
+  // Always return valid fallback credentials
+  return {
+    username: 'John',
+    password: 'Password123'
+  };
+}
+
 /**
  * APPLICATION_CONFIG object for application-wide configuration settings
  * 
@@ -27,18 +77,17 @@ export const APPLICATION_CONFIG = {
  */
 export const TEST_DATA_CONSTANTS = {
   DEFAULT_PASSWORD: 'Password123',
-  DEMO_CREDENTIALS: {
-    USERNAME: 'alex',
-    PASSWORD: 'demo'
+  get DEMO_CREDENTIALS() {
+    return loadDemoCredentials();
   },
   TEST_PROFILE: {
-    FIRST_NAME: 'Alex',
-    LAST_NAME: 'Doe',
-    ADDRESS: '123 Test Street',
-    CITY: 'Test City',
-    STATE: 'Test State',
+    FIRST_NAME: 'John',
+    LAST_NAME: 'Smith',
+    ADDRESS: '123 Main Street',
+    CITY: 'Anytown',
+    STATE: 'CA',
     ZIP_CODE: '12345',
-    PHONE_NUMBER: '1234567890',
+    PHONE_NUMBER: '5551234567',
     SSN: '123-45-6789'
   },
   AMOUNTS: {
