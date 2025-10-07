@@ -1,4 +1,4 @@
-name: Simple Pipeline
+name: Playwright Tests
 
 # Trigger on push and pull requests
 on:
@@ -7,9 +7,9 @@ on:
   pull_request:
     branches: [ main ]
 
-# Simple pipeline with basic steps
+# Playwright test pipeline
 jobs:
-  simple-test:
+  playwright-tests:
     runs-on: ubuntu-latest
     
     steps:
@@ -24,8 +24,16 @@ jobs:
     - name: Install dependencies
       run: npm install
       
-    - name: Run tests
-      run: npm test
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps chromium
       
-    - name: Build project
-      run: npm run build
+    - name: Run Playwright tests on Chromium
+      run: npx playwright test --project=chromium
+      
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
