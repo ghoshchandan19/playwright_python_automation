@@ -4,7 +4,7 @@ Pytest configuration and fixtures for the ParaBank automation framework.
 import os
 import json
 import pytest
-from playwright.sync_api import sync_playwright, Browser, BrowserContext, Page
+from playwright.sync_api import sync_playwright, Browser, BrowserContext, Page, APIRequestContext
 from typing import Generator
 from src.config.config import Config
 from src.utils.test_data import TestDataGenerator
@@ -68,6 +68,21 @@ def credentials() -> dict:
             "username": "john",
             "password": "demo"
         }
+
+
+@pytest.fixture(scope="class")
+def request_context() -> Generator[APIRequestContext, None, None]:
+    """Create API request context for API tests."""
+    with sync_playwright() as p:
+        context = p.request.new_context(
+            base_url=Config().base_url,
+            extra_http_headers={
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        )
+        yield context
+        context.dispose()
 
 
 @pytest.fixture(autouse=True)
