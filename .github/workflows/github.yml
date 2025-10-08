@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: ParaBank Python Tests
 
 # Trigger on push and pull requests
 on:
@@ -7,33 +7,97 @@ on:
   pull_request:
     branches: [ main ]
 
-# Playwright test pipeline
+# Python test pipeline
 jobs:
-  playwright-tests:
+  python-tests:
     runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python-version: [3.9, 3.10, 3.11]
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
+    - name: Setup Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
       with:
-        node-version: '18'
+        python-version: ${{ matrix.python-version }}
         
-    - name: Install dependencies
-      run: npm install
-      
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+          
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps chromium
+      run: playwright install --with-deps chromium
       
-    - name: Run Playwright tests on Chromium
-      run: npx playwright test --project=chromium --retries=0
+    - name: Run smoke tests
+      run: pytest -m smoke --html=reports/smoke-report.html --self-contained-html
+      
+    - name: Run API tests
+      run: pytest -m api --html=reports/api-report.html --self-contained-html
+      
+    - name: Run UI tests
+      run: pytest -m ui --html=reports/ui-report.html --self-contained-html
+      
+    - name: Generate coverage report
+      run: pytest --cov=src --cov-report=html:reports/coverage --cov-report=xml
       
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: playwright-report
-        path: playwright-report/
+        name: test-reports-python-${{ matrix.python-version }}
+        path: reports/
+        retention-days: 30
+        
+    - name: Upload coverage reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: coverage-reports-python-${{ matrix.python-version }}
+        path: reports/coverage/
+        retention-days: 30
+
+  # Separate job for regression tests (longer running)
+  regression-tests:
+    runs-on: ubuntu-latest
+    needs: python-tests
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Install Playwright Browsers
+      run: playwright install --with-deps chromium
+      
+    - name: Run regression tests
+      run: pytest -m regression --html=reports/regression-report.html --self-contained-html
+      
+    - name: Upload regression test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: regression-test-reports
+        path: reports/
         retention-days: 30
