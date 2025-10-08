@@ -23,8 +23,8 @@ jobs:
       run: |
         pip install -r requirements.txt
         sudo apt-get update
-        sudo apt-get install -y libasound2t64
-        playwright install --with-deps chromium
+        sudo apt-get install -y libasound2t64 libnss3 libatk-bridge2.0-0 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libxss1 libasound2
+        playwright install chromium
       
     - name: Run tests
       run: pytest src/tests/ -v --html=reports/report.html --self-contained-html
